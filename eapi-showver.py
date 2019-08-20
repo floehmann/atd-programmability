@@ -3,6 +3,7 @@
 import pprint
 from jsonrpclib import Server
 
+# NOTE: Externalize config and secrets!
 switch = Server ("http://arista:arista@192.168.0.14/command-api")
 
 response = switch.runCmds( 1, ["show version"] )
