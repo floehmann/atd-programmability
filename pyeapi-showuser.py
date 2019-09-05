@@ -3,24 +3,22 @@
 import sys
 import pyeapi
 import pprint
+import argparse
 
-if len(sys.argv) < 2:
-    user = 'testuser'
-else:
-    user = str(sys.argv[1])
+parser = argparse.ArgumentParser(description='Show Arista switch user details')
+parser.add_argument('host', type=str, help='switch management interface')
+parser.add_argument('port', type=str, help='switch management port')
+parser.add_argument('admin', type=str, help='switch admin user login')
+parser.add_argument('password', type=str, help='switch admin password')
+parser.add_argument('user', type=str, help='switch user to check')
 
-print user
- 
-node = pyeapi.connect(host='192.168.0.14',username='arista',password='arista',return_node=True)
+args = parser.parse_args()
 
-# run it locally
-# ssh -L 8080:192.168.0.14:443 arista@external-atd-ip
-# https://127.0.0.1:8080/explorer.html
-#node = pyeapi.connect(host='127.0.0.1',port='8080',username='arista',password='arista',return_node=True)
+node = pyeapi.connect(host=args.host, port=args.port, username=args.admin, password=args.password, return_node=True)
 
 users = node.api('users')
 
-response = users.get(user)
+response = users.get(args.user)
 
 pprint.pprint(response)
 
